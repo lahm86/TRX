@@ -1,6 +1,7 @@
 #include "game/lara/col.h"
 
 #include "config.h"
+#include "game/anim.h"
 #include "game/collide.h"
 #include "game/input.h"
 #include "game/items.h"
@@ -54,11 +55,12 @@ void (*g_LaraCollisionRoutines[])(ITEM *item, COLL_INFO *coll) = {
     Lara_Col_SurfLeft,    Lara_Col_SurfRight, Lara_Col_UseMidas,
     Lara_Col_DieMidas,    Lara_Col_SwanDive,  Lara_Col_FastDive,
     Lara_Col_Gymnast,     Lara_Col_WaterOut,  Lara_Col_Controlled,
-    Lara_Col_Twist,       Lara_Col_UWRoll,
+    Lara_Col_Twist,       Lara_Col_UWRoll,    Lara_Col_Wade,
 };
 
 static void M_Default(ITEM *item, COLL_INFO *coll);
 static void M_Jumper(ITEM *item, COLL_INFO *coll);
+static void M_CollideStop(ITEM *item, const COLL_INFO *coll);
 
 static void M_Default(ITEM *item, COLL_INFO *coll)
 {
@@ -89,6 +91,34 @@ static void M_Jumper(ITEM *item, COLL_INFO *coll)
         item->pos.y += coll->mid_floor;
         item->gravity = 0;
         item->fall_speed = 0;
+    }
+}
+
+static void M_CollideStop(ITEM *const item, const COLL_INFO *const coll)
+{
+    switch (coll->old_anim_state) {
+    case LS_STOP:
+    case LS_TURN_R:
+    case LS_TURN_L:
+    case LS_FAST_TURN:
+        item->current_anim_state = coll->old_anim_state;
+        item->anim_num = coll->old_anim_num;
+        item->frame_num = coll->old_frame_num;
+        if (g_Input.left) {
+            item->goal_anim_state = LS_TURN_L;
+        } else if (g_Input.right) {
+            item->goal_anim_state = LS_TURN_R;
+        } else {
+            item->goal_anim_state = LS_STOP;
+        }
+        Lara_Animate(item);
+        break;
+
+    default:
+        if (!Item_TestAnimEqual(item, LA_STAND_IDLE)) {
+            Item_SwitchToAnim(item, LA_STAND_IDLE, 0);
+        }
+        break;
     }
 }
 
@@ -276,7 +306,9 @@ void Lara_Col_ForwardJump(ITEM *item, COLL_INFO *coll)
     if (item->fall_speed > 0 && coll->mid_floor <= 0) {
         if (Lara_LandedBad(item, coll)) {
             item->goal_anim_state = LS_DEATH;
-        } else if (g_Input.forward && !g_Input.slow) {
+        } else if (
+            g_Lara.water_status != LWS_WADE && g_Input.forward
+            && !g_Input.slow) {
             item->goal_anim_state = LS_RUN;
         } else {
             item->goal_anim_state = LS_STOP;
@@ -485,7 +517,11 @@ void Lara_Col_Back(ITEM *item, COLL_INFO *coll)
     g_Lara.move_angle = item->rot.y - PHD_180;
     item->gravity = 0;
     item->fall_speed = 0;
-    coll->bad_pos = STEPUP_HEIGHT;
+    if (g_Lara.water_status == LWS_WADE) {
+        coll->bad_pos = NO_BAD_POS;
+    } else {
+        coll->bad_pos = STEPUP_HEIGHT;
+    }
     coll->bad_neg = -STEPUP_HEIGHT;
     coll->bad_ceiling = 0;
     coll->slopes_are_walls = 1;
@@ -535,7 +571,11 @@ void Lara_Col_StepRight(ITEM *item, COLL_INFO *coll)
     g_Lara.move_angle = item->rot.y + PHD_90;
     item->gravity = 0;
     item->fall_speed = 0;
-    coll->bad_pos = STEP_L / 2;
+    if (g_Lara.water_status == LWS_WADE) {
+        coll->bad_pos = NO_BAD_POS;
+    } else {
+        coll->bad_pos = STEP_L / 2;
+    }
     coll->bad_neg = -STEP_L / 2;
     coll->bad_ceiling = 0;
     coll->slopes_are_walls = 1;
@@ -566,8 +606,12 @@ void Lara_Col_StepLeft(ITEM *item, COLL_INFO *coll)
     g_Lara.move_angle = item->rot.y - PHD_90;
     item->gravity = 0;
     item->fall_speed = 0;
-    coll->bad_pos = 128;
-    coll->bad_neg = -128;
+    if (g_Lara.water_status == LWS_WADE) {
+        coll->bad_pos = NO_BAD_POS;
+    } else {
+        coll->bad_pos = STEP_L / 2;
+    }
+    coll->bad_neg = -STEP_L / 2;
     coll->bad_ceiling = 0;
     coll->slopes_are_walls = 1;
     coll->slopes_are_pits = 1;
@@ -891,6 +935,7 @@ void Lara_Col_SurfSwim(ITEM *item, COLL_INFO *coll)
 {
     g_Lara.move_angle = item->rot.y;
     Lara_SurfaceCollision(item, coll);
+    Lara_TestWaterClimbOut(item, coll);
 }
 
 void Lara_Col_SurfTread(ITEM *item, COLL_INFO *coll)
@@ -948,4 +993,53 @@ void Lara_Col_UWDeath(ITEM *item, COLL_INFO *coll)
         item->pos.y -= 5;
     }
     Lara_SwimCollision(item, coll);
+}
+
+void Lara_Col_Wade(ITEM *item, COLL_INFO *coll)
+{
+    g_Lara.move_angle = item->rot.y;
+    coll->slopes_are_walls = 1;
+    coll->bad_pos = NO_BAD_POS;
+    coll->bad_neg = -STEPUP_HEIGHT;
+    coll->bad_ceiling = 0;
+
+    Lara_GetCollisionInfo(item, coll);
+    if (Lara_HitCeiling(item, coll) || Lara_TestVault(item, coll)) {
+        return;
+    }
+
+    if (Lara_DeflectEdge(item, coll)) {
+        item->rot.z = 0;
+        if (coll->front_type != COLL_NONE
+            && coll->front_floor < -STEP_L * 5 / 2) {
+            item->current_anim_state = LS_SPLAT;
+            if (Anim_TestAbsFrameRange(item->frame_num, 0, 9)) {
+                Item_SwitchToAnim(item, LA_HIT_WALL_LEFT, 0);
+                return;
+            }
+            if (Anim_TestAbsFrameRange(item->frame_num, 10, 21)) {
+                Item_SwitchToAnim(item, LA_HIT_WALL_RIGHT, 0);
+                return;
+            }
+        }
+        M_CollideStop(item, coll); // does this fix wall issues?
+    }
+
+    if (Lara_Fallen(item, coll)) {
+        return;
+    }
+
+    if (coll->mid_floor >= -STEPUP_HEIGHT && coll->mid_floor < -STEP_L / 2) {
+        if (Anim_TestAbsFrameRange(item->frame_num, 3, 14)) {
+            Item_SwitchToAnim(item, LA_RUN_STEP_UP_LEFT, 0);
+        } else {
+            Item_SwitchToAnim(item, LA_RUN_STEP_UP_RIGHT, 0);
+        }
+    }
+
+    if (Lara_TestSlide(item, coll)) {
+        return;
+    }
+
+    item->pos.y += MIN(coll->mid_floor, 50);
 }
