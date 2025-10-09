@@ -146,6 +146,16 @@ int32_t Item_GetFrames(const ITEM *item, ANIM_FRAME *frames[], int32_t *rate)
         return numerator;
     }
 
+    // Avoid the flip 180 command having a bad effect on interpolated frames
+    // on rate 1 animations, such as neutral jump twist. TODO: improve this.
+    if (key_frame_span == 1
+        && Anim_HasFXCommandBetween(
+            anim, ITEM_ACTION_TURN_180, first_key_frame_num,
+            second_key_frame_num)) {
+        *rate = denominator;
+        return numerator;
+    }
+
     // Invalid state for interpolation
     if (item != Lara_GetItem()
         && (!item->active || item->status != IS_ACTIVE
