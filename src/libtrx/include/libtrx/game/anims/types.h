@@ -62,4 +62,5 @@ typedef struct {
     int16_t num_commands;
     int16_t command_idx;
     ANIM_COMMAND *commands;
+    bool use_partial_interp;
 } ANIM;

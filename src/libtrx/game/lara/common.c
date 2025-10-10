@@ -30,16 +30,6 @@ static bool m_Controllable = false;
 static int16_t m_DeathCameraTarget = NO_ITEM;
 static LARA_EXTRA_STATE m_StartAnimState = LS_EXTRA_BREATH;
 
-static bool M_IsInvalidInterpAnim(const LARA_ANIMATION anim_idx)
-{
-    for (int32_t i = 0; m_InvalidInterpAnims[i] != (LARA_ANIMATION)-1; i++) {
-        if (m_InvalidInterpAnims[i] == anim_idx) {
-            return true;
-        }
-    }
-    return false;
-}
-
 void Lara_Initialise(const GF_LEVEL *const level)
 {
     ITEM *const lara_item = Lara_GetItem();
@@ -117,6 +107,12 @@ void Lara_Initialise(const GF_LEVEL *const level)
         lara_info->gun_status = LGS_ARMLESS;
     } else {
         Lara_InitialiseInventory(level);
+    }
+
+    const OBJECT *const obj = Object_Get(lara_item->object_id);
+    for (int32_t i = 0; m_InvalidInterpAnims[i] != (LARA_ANIMATION)-1; i++) {
+        ANIM *const anim = Object_GetAnim(obj, i);
+        anim->use_partial_interp = true;
     }
 }
 
@@ -385,21 +381,6 @@ bool Lara_IsControllable(void)
 void Lara_SetControllable(const bool controllable)
 {
     m_Controllable = controllable;
-}
-
-bool Lara_CanInterpolate(
-    const ITEM *const item, const int32_t frame_a, const int32_t frame_b)
-{
-    const int32_t anim_idx = Item_GetRelativeAnim(item);
-    if (!M_IsInvalidInterpAnim(anim_idx)) {
-        return true;
-    }
-
-    // Avoid the flip 180 command having a bad effect on interpolated frames
-    // on rate 1 animations, such as neutral jump twist. TODO: improve this.
-    const ANIM *const anim = Item_GetAnim(item);
-    return !Anim_HasFXCommandBetween(
-        anim, ITEM_ACTION_TURN_180, frame_a, frame_b);
 }
 
 ITEM *Lara_GetDeathCameraTarget(void)

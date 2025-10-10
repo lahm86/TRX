@@ -146,11 +146,18 @@ int32_t Item_GetFrames(const ITEM *item, ANIM_FRAME *frames[], int32_t *rate)
         return numerator;
     }
 
-    // Invalid state for interpolation
-    const OBJECT *const obj = Object_Get(item->object_id);
-    if (obj->can_interpolate_func != nullptr
-        && !obj->can_interpolate_func(
-            item, first_key_frame_num, second_key_frame_num)) {
+    if (anim->use_partial_interp
+        && Anim_HasFXCommandBetween(
+            anim, ITEM_ACTION_TURN_180, first_key_frame_num,
+            second_key_frame_num)) {
+        *rate = denominator;
+        return numerator;
+    }
+
+    if (item != Lara_GetItem()
+        && (!item->active || item->status != IS_ACTIVE
+            || !item->enable_interpolation
+            || !Object_Get(item->object_id)->enable_interpolation)) {
         *rate = denominator;
         return numerator;
     }
