@@ -466,9 +466,9 @@ void Savegame_PersistGameToCurrentInfo(const GF_LEVEL *const level)
         resume->grenade_ammo =
             Inv_RequestItem(O_GRENADE_AMMO_ITEM) * GRENADE_AMMO_QTY;
     }
+#endif
 
     resume->flares = Inv_RequestItem(O_FLARE_ITEM);
-#endif
 
     resume->equipped_gun_type = lara->last_gun_type;
     resume->holsters_gun_type = lara->holsters_gun_type;
@@ -509,6 +509,7 @@ void Savegame_ApplyLogicToCurrentInfo(const GF_LEVEL *const level)
         resume->shotgun_ammo = 0;
         resume->magnum_ammo = 0;
         resume->uzi_ammo = 0;
+        resume->flares = 0;
 #if TR_VERSION == 1
         resume->num_scions = 0;
 #else
@@ -518,7 +519,6 @@ void Savegame_ApplyLogicToCurrentInfo(const GF_LEVEL *const level)
         resume->harpoon_ammo = 0;
         resume->m16_ammo = 0;
         resume->grenade_ammo = 0;
-        resume->flares = 0;
 #endif
         resume->equipped_gun_type = LGT_UNARMED;
         resume->holsters_gun_type = LGT_UNARMED;
@@ -541,6 +541,7 @@ void Savegame_ApplyLogicToCurrentInfo(const GF_LEVEL *const level)
         resume->shotgun_ammo = 0;
         resume->magnum_ammo = 0;
         resume->uzi_ammo = 0;
+        resume->flares = 0;
 #if TR_VERSION == 1
         resume->num_scions = 0;
 #else
@@ -550,7 +551,6 @@ void Savegame_ApplyLogicToCurrentInfo(const GF_LEVEL *const level)
         resume->harpoon_ammo = 0;
         resume->m16_ammo = 0;
         resume->grenade_ammo = 0;
-        resume->flares = 0;
 #endif
         resume->equipped_gun_type = LGT_PISTOLS;
         resume->holsters_gun_type = LGT_PISTOLS;
@@ -568,6 +568,8 @@ void Savegame_ApplyLogicToCurrentInfo(const GF_LEVEL *const level)
         resume->magnum_ammo = 10000;
         resume->uzi_ammo = 10000;
 
+        resume->flares = -1;
+
 #if TR_VERSION == 1
         resume->equipped_gun_type = LGT_UZIS;
         resume->holsters_gun_type = LGT_UZIS;
@@ -580,7 +582,6 @@ void Savegame_ApplyLogicToCurrentInfo(const GF_LEVEL *const level)
         resume->grenade_ammo = 10000;
         resume->harpoon_ammo = 10000;
 
-        resume->flares = -1;
         resume->equipped_gun_type = LGT_GRENADE;
         resume->holsters_gun_type = LGT_PISTOLS;
         resume->back_gun_type = LGT_GRENADE;

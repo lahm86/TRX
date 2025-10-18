@@ -19,3 +19,5 @@ int32_t Lara_GetWaterDepth(int32_t x, int32_t y, int32_t z, int16_t room_num);
 bool Lara_IsM16Active(void);
 bool Lara_HasState(const LARA_TRX_STATE *test_arr);
 bool Lara_HasExtraState(const LARA_EXTRA_STATE *test_arr);
+
+void Lara_GetJointAbsPosition(XYZ_32 *vec, LARA_MESH joint);

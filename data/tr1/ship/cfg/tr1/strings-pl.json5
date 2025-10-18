@@ -211,6 +211,12 @@
         "large_medipack": {
             "name": "Duża apteczka",
         },
+        "flare": {
+            "name": "Flara",
+        },
+        "flares_box": {
+            "name": "Pudełko z flarami",
+        },
         "pistols": {
             "name": "Pistolety",
         },
@@ -315,6 +321,9 @@
         },
         "lara_extra": {
             "name": "Dodatkowa animacja Lary",
+        },
+        "lara_flare": {
+            "name": "Animacja flary",
         },
         "bacon_lara": {
             "name": "Klon Lary",
@@ -746,6 +755,9 @@
         },
         "stopwatch": {
             "name": "\\{review}Statystyki",
+        },
+        "flare_fire": {
+            "name": "Iskry flary",
         }
     },
     "game_strings": {

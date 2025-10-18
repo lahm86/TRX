@@ -211,6 +211,12 @@
         "large_medipack": {
             "name": "Большая аптечка",
         },
+        "flare": {
+            "name": "\\{review}Вспышка",
+        },
+        "flares_box": {
+            "name": "\\{review}Коробка вспышки",
+        },
         "pistols": {
             "name": "Пистолеты",
         },
@@ -315,6 +321,9 @@
         },
         "lara_extra": {
             "name": "Дополнительная анимация Лары",
+        },
+        "lara_flare": {
+            "name": "\\{review}Анимация фальшфейера",
         },
         "bacon_lara": {
             "name": "Двойник Лары",
@@ -749,6 +758,9 @@
         },
         "stopwatch": {
             "name": "\\{review}Статистика",
+        },
+        "flare_fire": {
+            "name": "\\{review}Огонь фальшфейера",
         }
     },
     "game_strings": {

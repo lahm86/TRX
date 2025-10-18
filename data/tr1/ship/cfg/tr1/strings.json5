@@ -211,6 +211,12 @@
         "large_medipack": {
             "name": "Large Medi Pack",
         },
+        "flare": {
+            "name": "Flare",
+        },
+        "flares_box": {
+            "name": "Flares Box",
+        },
         "pistols": {
             "name": "Pistols",
         },
@@ -318,6 +324,9 @@
         },
         "lara_extra": {
             "name": "Lara's Extra Animation",
+        },
+        "lara_flare": {
+            "name": "Flare Animation",
         },
         "bacon_lara": {
             "name": "Bacon Lara",
@@ -743,6 +752,9 @@
         },
         "winston": {
             "name": "Winston",
+        },
+        "flare_fire": {
+            "name": "Flare sparks",
         }
     },
     "game_strings": {

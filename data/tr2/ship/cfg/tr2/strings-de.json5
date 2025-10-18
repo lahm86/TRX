@@ -1116,7 +1116,6 @@
         "ENUM_INPUT_ROLE_EQUIP_HARPOON": "Harpune ausrüsen",
         "ENUM_INPUT_ROLE_EQUIP_M16": "M16-ausrüsten",
         "ENUM_INPUT_ROLE_EQUIP_MAGNUMS": "Automatik-Pistolen ausrüsten",
-        "ENUM_INPUT_ROLE_USE_FLARE": "Fackel",
         "MISC_NONE": "None",
         "PASSPORT_EXIT_DEMO": "Demo beenden",
         "SETTING_ENABLE_GUN_LIGHTING_DESCRIPTION": "Aktiviert die verwendung von dynamischer Beleuchtung für Schüsse und Explosionen.",

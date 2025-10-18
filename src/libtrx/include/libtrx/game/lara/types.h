@@ -11,9 +11,7 @@
 typedef struct {
     ANIM_FRAME *frame_base;
     int16_t frame_num;
-#if TR_VERSION >= 2
     int16_t anim_num;
-#endif
     int16_t lock;
     XYZ_16 rot;
     int16_t flash_gun;
@@ -99,11 +97,10 @@ typedef struct {
     AMMO_INFO harpoon_ammo;
     AMMO_INFO grenade_ammo;
     AMMO_INFO m16_ammo;
-
+#endif
     struct {
         bool control;
         int16_t age;
         int16_t frame_num;
     } flare;
-#endif
 } LARA_INFO;

@@ -62,10 +62,10 @@ void Lara_Initialise(const GF_LEVEL *const level)
 #if TR_VERSION >= 2
     lara_info->back_gun_obj_id = O_LARA;
     lara_info->gun_item_num = NO_ITEM;
+#endif
     lara_info->flare.age = 0;
     lara_info->flare.control = false;
     lara_info->flare.frame_num = 0;
-#endif
     lara_info->calc_fall_speed = 0;
     lara_info->pose_count = 0;
     lara_info->hit_direction = -1;
@@ -293,12 +293,12 @@ void Lara_UseItem(const OBJECT_ID obj_id)
     case O_GRENADE_OPTION:
         request_gun_type = LGT_GRENADE;
         break;
+#endif
 
     case O_FLARES_ITEM:
     case O_FLARES_OPTION:
         lara_info->request_gun_type = LGT_FLARE;
         break;
-#endif
 
     case O_SMALL_MEDIPACK_ITEM:
     case O_SMALL_MEDIPACK_OPTION:

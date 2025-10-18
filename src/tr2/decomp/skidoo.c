@@ -4,7 +4,6 @@
 #include "game/creature.h"
 #include "game/effects.h"
 #include "game/gun/gun_misc.h"
-#include "game/lara.h"
 #include "game/objects/common.h"
 #include "game/objects/vehicles/skidoo_armed.h"
 

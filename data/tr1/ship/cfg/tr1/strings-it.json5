@@ -211,6 +211,12 @@
         "large_medipack": {
             "name": "Kit Medico Grande",
         },
+        "flare": {
+            "name": "Razzo di Segnalazione",
+        },
+        "flares_box": {
+            "name": "Scatola Razzi",
+        },
         "pistols": {
             "name": "Pistole",
         },
@@ -315,6 +321,9 @@
         },
         "lara_extra": {
             "name": "Animazione Aggiuntiva di Lara",
+        },
+        "lara_flare": {
+            "name": "Animazione Razzo di Segnalazione",
         },
         "bacon_lara": {
             "name": "Sosia di Lara",
@@ -755,6 +764,9 @@
         },
         "stopwatch": {
             "name": "\\{review}Statistiche",
+        },
+        "flare_fire": {
+            "name": "Scintille Fiamma",
         }
     },
     "game_strings": {

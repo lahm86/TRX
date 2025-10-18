@@ -1098,7 +1098,6 @@
         "ENUM_INPUT_ROLE_EQUIP_HARPOON": "Equip Harpoon Gun",
         "ENUM_INPUT_ROLE_EQUIP_M16": "Equip M16",
         "ENUM_INPUT_ROLE_EQUIP_MAGNUMS": "Equip Automatic Pistols",
-        "ENUM_INPUT_ROLE_USE_FLARE": "Flare",
         "MISC_NONE": "None",
         "PASSPORT_EXIT_DEMO": "Exit Demo",
         "SETTING_ENABLE_GUN_LIGHTING_DESCRIPTION": "Enables dynamic lighting to be generated for gunshots and explosions.",

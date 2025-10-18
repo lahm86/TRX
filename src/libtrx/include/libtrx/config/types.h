@@ -268,9 +268,9 @@ typedef struct {
         bool fix_shotgun_targeting;
 #else
         bool fix_m16_accuracy;
+#endif
         bool fix_free_flare_glitch;
         bool fix_flare_throw_priority;
-#endif
         bool fix_walk_run_jump;
         bool fix_wade_wall_hit;
 

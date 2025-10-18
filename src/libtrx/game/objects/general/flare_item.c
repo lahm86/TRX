@@ -1,13 +1,13 @@
 #include "game/objects/general/flare_item.h"
 
-#include <libtrx/game/matrix.h>
-#include <libtrx/game/objects.h>
-#include <libtrx/game/objects/general/pickup.h>
-#include <libtrx/game/output.h>
-#include <libtrx/game/random.h>
-#include <libtrx/game/sound.h>
-#include <libtrx/game/spawn.h>
-#include <libtrx/utils.h>
+#include "game/matrix.h"
+#include "game/objects.h"
+#include "game/objects/general/pickup.h"
+#include "game/output.h"
+#include "game/random.h"
+#include "game/sound.h"
+#include "game/spawn.h"
+#include "utils.h"
 
 #define M_FLARE_INTENSITY 12
 #define M_FLARE_FALL_OFF 11
