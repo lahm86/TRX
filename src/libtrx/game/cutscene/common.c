@@ -1,23 +1,21 @@
+#include "debug.h"
+#include "game/camera.h"
 #include "game/cutscene.h"
-
 #include "game/effects.h"
 #include "game/game.h"
-#include "game/game_flow.h"
-#include "game/room_draw.h"
+#include "game/interpolation.h"
+#include "game/lara.h"
+#include "game/music.h"
+#include "game/output.h"
+#include "game/rooms.h"
 #include "game/shell.h"
-
-#include <libtrx/debug.h>
-#include <libtrx/game/camera.h>
-#include <libtrx/game/input.h>
-#include <libtrx/game/interpolation.h>
-#include <libtrx/game/lara.h>
-#include <libtrx/game/level.h>
-#include <libtrx/game/music.h>
-#include <libtrx/game/output.h>
-#include <libtrx/game/sound.h>
-#include <libtrx/memory.h>
+#include "version.h"
 
 static CAMERA_INFO m_LocalCamera = {};
+
+#if TR_VERSION == 2
+void Room_DrawAllRooms(int16_t current_room);
+#endif
 
 static void M_ControlLara(const int16_t item_num)
 {
@@ -78,6 +76,7 @@ bool Cutscene_Start(const int32_t level_num)
 
     M_InitialiseLara(level);
 
+#if TR_VERSION == 1
     const int32_t room_count = Room_GetCount();
     for (int16_t room_num = 0; room_num < room_count; room_num++) {
         const ROOM *const room = Room_Get(room_num);
@@ -92,6 +91,7 @@ bool Cutscene_Start(const int32_t level_num)
             Room_MarkToBeDrawn(room_num);
         }
     }
+#endif
 
     Camera_GetCineData()->frame_idx = 0;
 
@@ -136,14 +136,18 @@ GF_COMMAND Cutscene_Control(void)
     Camera_UpdateCutscene();
     Output_AnimateTextures(1);
 
+    // Not sure what this is for
+    const int32_t d1 = g_TRVersion == 1 ? 1 : 0;
+    const int32_t d2 = g_TRVersion == 1 ? 2 : 0;
+
     CINE_DATA *const cine_data = Camera_GetCineData();
     cine_data->frame_idx++;
-    if (cine_data->frame_idx >= cine_data->frame_count - 1) {
+    if (cine_data->frame_idx >= cine_data->frame_count - d1) {
         // Remember the scene after the update to prevent the interpolation
         // from twitching the camera back and forth.
         Interpolation_Remember();
 
-        cine_data->frame_idx = cine_data->frame_count - 2;
+        cine_data->frame_idx = cine_data->frame_count - d2;
         return (GF_COMMAND) { .action = GF_LEVEL_COMPLETE };
     }
 
@@ -152,7 +156,14 @@ GF_COMMAND Cutscene_Control(void)
 
 void Cutscene_Draw(void)
 {
+#if TR_VERSION == 1
     Game_Draw(true);
+#else
+    Interpolation_Interpolate();
+    Camera_Apply();
+    Room_DrawAllRooms(g_Camera.interp.room_num);
+    SceneCompositor_Flush();
+#endif
 }
 
 CAMERA_INFO *Cutscene_GetCamera(void)

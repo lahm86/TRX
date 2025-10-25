@@ -1,5 +1,3 @@
-#include "decomp/decomp.h"
-#include "game/cutscene.h"
 #include "game/game_flow.h"
 #include "game/level.h"
 
