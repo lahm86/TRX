@@ -1,4 +1,5 @@
 #include <trx/game/math.h>
+#include <trx/utils.h>
 
 static const int16_t m_SinTable[0x402] = {
     0x0000, 0x0019, 0x0032, 0x004B, 0x0065, 0x007E, 0x0097, 0x00B0, 0x00C9,
@@ -400,4 +401,44 @@ int32_t Math_Atan(int32_t x, int32_t y)
     }
 
     return result;
+}
+
+uint32_t Math_GetAngle(
+    const int32_t x1, const int32_t z1, const int32_t x2, const int32_t z2)
+{
+    int32_t dx = x2 - x1;
+    int32_t dz = z2 - z1;
+
+    if (dx == 0 && dz == 0) {
+        return 0;
+    }
+
+    int32_t octant = 0;
+    if (dx < 0) {
+        octant = 4;
+        dx = -dx;
+    }
+
+    if (dz < 0) {
+        octant += 2;
+        dz = -dz;
+    }
+
+    if (dz > dx) {
+        octant++;
+        SWAP(dx, dz);
+    }
+
+    while ((int16_t)dz != dz) {
+        dx >>= 1;
+        dz >>= 1;
+    }
+
+    int32_t angle = m_AtanBaseTable[octant] + m_AtanAngleTable[(dz << 11) / dx];
+
+    if (angle < 0) {
+        angle = -angle;
+    }
+
+    return -angle & 0xFFFF;
 }

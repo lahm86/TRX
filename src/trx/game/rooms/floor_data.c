@@ -255,6 +255,7 @@ void Room_PopulateSectorData(
     sector->is_death_sector = false;
     sector->trigger = nullptr;
     sector->ladder = LADDER_NONE;
+    sector->minecart_type = MINECART_NONE;
 
     if (start_index == null_index) {
         return;
@@ -308,6 +309,16 @@ void Room_PopulateSectorData(
             M_ReadTriangulation(&sector->ceiling, fd_entry, *data++);
             break;
 
+        case FT_MINECART_LEFT:
+            sector->minecart_type = MINECART_LEFT;
+            break;
+
+        case FT_MINECART_RIGHT:
+            sector->minecart_type = sector->minecart_type == MINECART_LEFT
+                ? MINECART_STOP
+                : MINECART_RIGHT;
+            break;
+
         default:
             break;
         }
@@ -351,6 +362,7 @@ void Room_TestSectorTrigger(const ITEM *const item, const SECTOR *const sector)
 
         const LADDER_DIRECTION direction = 1 << Math_GetDirection(item->rot.y);
         lara_info->climb_status = (sector->ladder & direction) == direction;
+        lara_info->minecart_type = sector->minecart_type;
     }
 
     const TRIGGER *const trigger = sector->trigger;

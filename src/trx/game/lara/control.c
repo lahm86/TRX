@@ -9,6 +9,8 @@
 #include <trx/game/lara.h>
 #include <trx/game/level/settings.h>
 #include <trx/game/music.h>
+#include <trx/game/objects/vehicles/minecart.h>
+#include <trx/game/objects/vehicles/skidoo_common.h>
 #include <trx/game/pathing.h>
 #include <trx/game/rooms.h>
 #include <trx/game/sound.h>
@@ -33,8 +35,6 @@
 // clang-format on
 
 static int32_t m_OpenDoorsCheatCooldown = 0;
-
-extern bool Skidoo_Control(void);
 
 static SECTOR *M_GetCurrentSector(void)
 {
@@ -437,6 +437,10 @@ static void M_HandleAboveWater(COLL_INFO *const coll)
         if (vehicle->object_id == O_SKIDOO_FAST) {
             // TODO: make this Object_Get(O_SKIDOO_FAST)->control
             if (Skidoo_Control()) {
+                return;
+            }
+        } else if (vehicle->object_id == O_MINECART) {
+            if (Minecart_Control()) {
                 return;
             }
         } else {

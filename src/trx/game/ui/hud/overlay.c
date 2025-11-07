@@ -191,7 +191,8 @@ static void M_DebugPosTopLeft(void)
             "%d, %d", vehicle != nullptr ? vehicle->speed : lara->speed,
             vehicle != nullptr ? vehicle->fall_speed : lara->fall_speed)));
         UI_Label(String_StylizeSmallDigitsStatic(String_FormatStatic(
-            "%d, %d, %d", obj_id, Item_GetRelativeObjAnim(lara, obj_id),
+            "%d, %d, %d", Object_ToGameID(obj_id),
+            Item_GetRelativeObjAnim(lara, obj_id),
             Item_GetRelativeFrame(lara))));
     }
     if (g_Config.debug.enable_debug_camera) {

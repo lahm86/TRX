@@ -42,7 +42,16 @@ typedef enum {
     FT_ROOF_NWSE_PORTAL_NE = 16,
     FT_ROOF_NESW_PORTAL_NW = 17,
     FT_ROOF_NESW_PORTAL_SE = 18,
+    FT_MINECART_LEFT = 20,
+    FT_MINECART_RIGHT = 21,
 } FLOOR_TYPE;
+
+typedef enum {
+    MINECART_NONE,
+    MINECART_LEFT,
+    MINECART_RIGHT,
+    MINECART_STOP,
+} MINECART_TYPE;
 
 typedef enum {
     SPLIT_NONE,

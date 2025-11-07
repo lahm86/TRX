@@ -428,7 +428,16 @@ OBJECT_ID Lara_GetAnimationObject(void)
 
     const ITEM *const vehicle = Lara_Vehicle_GetItem();
     if (vehicle != nullptr) {
-        return vehicle->object_id == O_BOAT ? O_LARA_BOAT : O_LARA_SKIDOO;
+        switch (vehicle->object_id) {
+        case O_BOAT:
+            return O_LARA_BOAT;
+        case O_SKIDOO_FAST:
+            return O_LARA_SKIDOO;
+        case O_MINECART:
+            return O_LARA_MINECART;
+        default:
+            break;
+        }
     }
     return O_LARA;
 }

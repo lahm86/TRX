@@ -72,6 +72,11 @@ static XYZ_32 M_GetItemMaxDelta(const ITEM *const item)
         max_xz = 200;
         break;
 
+    case O_MINECART:
+        max_xz = 200;
+        max_y = MAX(128, ABS(item->speed)); // TODO: still not great
+        break;
+
     case O_HARPOON_BOLT:
         max_xz = 150;
         break;

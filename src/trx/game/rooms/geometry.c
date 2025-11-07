@@ -7,9 +7,8 @@
 #include <trx/game/rooms.h>
 #include <trx/utils.h>
 
-#define M_WALL_MASK (WALL_L - 1)
-#define M_NEG_TILT(T, H) ((T * (H & M_WALL_MASK)) >> 2)
-#define M_POS_TILT(T, H) ((T * ((M_WALL_MASK - H) & M_WALL_MASK)) >> 2)
+#define M_NEG_TILT(T, H) ((T * (H & WALL_MASK)) >> 2)
+#define M_POS_TILT(T, H) ((T * ((WALL_MASK - H) & WALL_MASK)) >> 2)
 
 static int16_t m_AbyssMinHeight = 0;
 static int32_t m_AbyssMaxHeight = 0;
@@ -70,8 +69,8 @@ static int16_t M_GetSplitSurfaceHeight(
     const SPLIT split = surface.split;
     const bool is_ceiling = surface.type == SURFACE_CEILING;
     int16_t height = surface.height;
-    const int32_t dx = x & M_WALL_MASK;
-    const int32_t dz = z & M_WALL_MASK;
+    const int32_t dx = x & WALL_MASK;
+    const int32_t dz = z & WALL_MASK;
     int32_t x_off, z_off;
 
     const bool is_nesw =
@@ -173,8 +172,8 @@ static int16_t M_GetSplitTiltType(
     const SECTOR *const sector, const int32_t x, const int32_t z)
 {
     const SPLIT split = sector->floor.split;
-    const int32_t dx = x & M_WALL_MASK;
-    const int32_t dz = z & M_WALL_MASK;
+    const int32_t dx = x & WALL_MASK;
+    const int32_t dz = z & WALL_MASK;
     int32_t x_off;
     int32_t z_off;
 
@@ -207,8 +206,8 @@ static bool M_IsPortalSolid(
         return false;
     }
 
-    const int32_t dx = x & M_WALL_MASK;
-    const int32_t dz = z & M_WALL_MASK;
+    const int32_t dx = x & WALL_MASK;
+    const int32_t dz = z & WALL_MASK;
     const bool is_ceiling = surface.type == SURFACE_CEILING;
 
     switch (surface.split.type) {
