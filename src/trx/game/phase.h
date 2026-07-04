@@ -4,6 +4,7 @@
 #include <trx/game/phase/executor.h>
 #include <trx/game/phase/phase_cutscene.h>
 #include <trx/game/phase/phase_demo.h>
+#include <trx/game/phase/phase_flyby.h>
 #include <trx/game/phase/phase_game.h>
 #include <trx/game/phase/phase_globe_select.h>
 #include <trx/game/phase/phase_inventory.h>

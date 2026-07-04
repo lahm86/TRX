@@ -87,6 +87,9 @@ GF_COMMAND Game_Control(const bool demo_mode)
         || !Object_Get(O_ASSAULT_DIGITS)->loaded) {
         Stats_UpdateTimer();
     }
+    if (Camera_FlybyMode_IsActive()) {
+        return GF_RunFlybySequence();
+    }
     if (Game_IsInGym()) {
         Gym_Control();
     }

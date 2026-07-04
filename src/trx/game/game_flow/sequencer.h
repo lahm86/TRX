@@ -4,6 +4,7 @@
 #include <trx/game/inventory_ring/types.h>
 #include <trx/game/savegame/types.h>
 
+GF_COMMAND GF_RunFlybySequence(void);
 GF_COMMAND GF_EnterPhotoMode(void);
 GF_COMMAND GF_PauseGame(void);
 GF_COMMAND GF_ShowInventory(INVENTORY_MODE inv_mode);

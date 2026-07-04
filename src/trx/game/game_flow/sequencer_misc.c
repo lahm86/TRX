@@ -26,6 +26,14 @@ GF_COMMAND GF_RunTitle(void)
     return GF_ShowInventory(INV_TITLE_MODE);
 }
 
+GF_COMMAND GF_RunFlybySequence(void)
+{
+    PHASE *const subphase = Phase_Flyby_Create();
+    const GF_COMMAND gf_cmd = PhaseExecutor_Run(subphase);
+    Phase_Flyby_Destroy(subphase);
+    return gf_cmd;
+}
+
 GF_COMMAND GF_EnterPhotoMode(void)
 {
     PHASE *const subphase = Phase_PhotoMode_Create();
