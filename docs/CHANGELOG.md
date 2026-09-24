@@ -50,6 +50,7 @@
 - Fixed pickups looking too dark, such as the eye pieces in Tomb of Seth (TRX637)
 
 **Lua**
+- Added `scale`, `y_offset`, `base_rot_x`, `base_rot_y`, `base_rot_z` and `draws_at_pivot` to an inventory ring entry, so a script can size and pose an object in the ring
 - Added `trx.fx.gun_flash()`, so a script can draw a muzzle flash on any item (TRX89)
 - Added `trx.fx.spark.context`, so a script can determine how a spark was spawned before deciding to alter it (TRX1590)
 - Added `trx.items.Item.joint_count` and `trx.items.Item:joint_pos()` (TRX89)
